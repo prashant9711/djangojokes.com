@@ -9,3 +9,7 @@ venv.bak/
 __pycache__/
 db.sqlite/
 local_settings.py/
+
+# MY ADDITIONS
+solutions
+starter-code
