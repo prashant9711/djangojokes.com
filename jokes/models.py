@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from common.utils.text import unique_slug
+from django.conf import settings
 
 
 
@@ -37,6 +38,10 @@ class Joke(models.Model):
     tags = models.ManyToManyField('Tag')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT
+    )
 
     slug = models.SlugField(
         max_length =50, unique=True, null=False, editable=False
