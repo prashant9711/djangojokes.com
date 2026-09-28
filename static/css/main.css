@@ -19,6 +19,36 @@ label {
   font-variant: small-caps;
 }
 
+/* MESSAGE STYLES */
+.message {
+  background-color: palegoldenrod;
+  color: black;
+}
+
+.message.debug {
+  background-color: slategray;
+  color: white;
+}
+.message.info {
+  background-color: azure;
+  color: darkblue;
+}
+
+.message.success {
+  background-color: lightgreen;
+  color: darkgreen;
+}
+
+.message.warning {
+  background-color: lightgoldenrodyellow;
+  color: darkgoldenrod;
+}
+
+.message.error {
+  background-color: pink;
+  color: darkred;
+}
+
 .form-check {
   display: inline-block;
   font-weight: normal;
