@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms import JokeForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     CreateView, DetailView, ListView, UpdateView, DeleteView
 )
@@ -13,7 +14,7 @@ class JokeDetailView(DetailView):
 class JokeListView(ListView):
     model = Joke
 
-class JokeCreateView(CreateView):
+class JokeCreateView(LoginRequiredMixin, CreateView):
     model = Joke
     form_class = JokeForm
 
@@ -25,10 +26,20 @@ class JokeUpdateView(UpdateView):
     model = Joke
     form_class = JokeForm
 
-class JokeDeleteView(DeleteView):
+    
+class JokeDeleteView(UserPassesTestMixin, DeleteView):
     model = Joke
     success_url = reverse_lazy('jokes:list')
+    
+    def test_func(self):
+        obj = self.get_object()
+        return self.request.user == obj.user
 
 
-
-# Create your views here.
+class JokeUpdateView(UserPassesTestMixin, UpdateView):
+    model = Joke
+    form_class = JokeForm
+    
+    def test_func(self):
+        obj = self.get_object()
+        return self.request.user == obj.user
