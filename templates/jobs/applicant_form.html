@@ -1,0 +1,6 @@
+   {% load crispy_forms_tags %}
+   
+   <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.job|as_crispy_field }}
+      <div class="row">
