@@ -24,6 +24,7 @@ urlpatterns = [
 
     
     # User Management
+    path('account/', include('users.urls')),
     path('account/', include('allauth.urls')),
 
     # Local Apps
