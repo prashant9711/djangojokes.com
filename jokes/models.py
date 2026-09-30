@@ -43,7 +43,18 @@ class Joke(models.Model):
         on_delete=models.PROTECT,
         related_name='jokes'
     )
+    
+    @property
+    def num_votes(self):
+        return self.jokevotes.count()
 
+    @property
+    def num_likes(self):
+        return self.jokevotes.filter(vote=1).count()
+
+    @property
+    def num_dislikes(self):
+        return self.jokevotes.filter(vote=-1).count()
     slug = models.SlugField(
         max_length =50, unique=True, null=False, editable=False
     )
