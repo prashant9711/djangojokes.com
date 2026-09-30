@@ -6,14 +6,17 @@ from .models import Applicant
 from common.utils.email import send_email
 from .forms import JobApplicationForm
 
+
 class JobAppView(FormView):
     template_name = 'jobs/joke_writer.html'
     form_class = JobApplicationForm
     success_url = reverse_lazy('jobs:thanks')
 
     def form_valid(self, form):
+        form.save()
+
         data = form.cleaned_data
-        to = 'pantprashant270@gmail.com'
+        to = 'prashantpant@isu.edu'
         subject = 'Application for Joke Writer'
         content = f'''<p>Hey HR Manager!</p>
             <p>Job application received:</p>
@@ -32,7 +35,3 @@ class JobAppThanksView(TemplateView):
     template_name = 'jobs/thanks.html'
 
 
-class JobAppView(CreateView):
-    model = Applicant
-    form_class = JobApplicationForm
-    success_url = reverse_lazy('jobs:thanks')

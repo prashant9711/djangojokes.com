@@ -134,11 +134,9 @@
                             <li>
                                 <a
                                     class="dropdown-item"
-                                    href="#"
+                                    href="{% url 'my-account' %}"
                                 >
                                     My Account
-                                <a class="dropdown-item" href="{% url 'my-account' %}">
-                                </a>
                                 </a>
                             </li>
 
@@ -161,7 +159,6 @@
                                     action="{% url 'account_logout' %}"
                                 >
                                     {% csrf_token %}
-
                                     <button
                                         class="dropdown-item"
                                         type="submit"

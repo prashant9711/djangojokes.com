@@ -176,30 +176,42 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'django-jokes-aws-s3' # REPLACE WITH YOUR BUCKET NAME
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_DEFAULT_ACL = None # Use S3 bucket's setting
 
-STATIC_URL = '/static/'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_S3_REGION_NAME = 'us-east-2'  # REPLACE WITH YOUR BUCKET REGION
+
+STORAGES = {
+    "default": {
+        "BACKEND": "djangojokes.storage_backends.PublicMediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "djangojokes.storage_backends.StaticStorage",
+    },
+}
+
+PRIVATE_FILE_STORAGE = 'djangojokes.storage_backends.PrivateMediaStorage'
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+#STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-'''
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
-        'OPTIONS': {
-            'host': 'smtp.sendgrid.net',
-            'port': 587,
-            'username': 'apikey',
-            'password': SENDGRID_API_KEY,
-            'use_tls': True,
-        },
-    },
-}
-'''
+
 
 
 if os.environ.get('ENVIRONMENT') != 'production':
