@@ -2,6 +2,7 @@
 
 {% block title %}Jokes{% endblock %}
 {% block main %}
+
   <a class="btn btn-success btn-sm float-end" href="{% url 'jokes:create' %}">
     + New Joke
   </a>
@@ -55,4 +56,5 @@
       </li>
     {% endfor %}
   </ul>
+  {% include 'includes/pagination.html' %}
 {% endblock %}
