@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from common.utils.text import unique_slug
 from django.conf import settings
-
+from django.db.models import Avg
 
 
 class Category(models.Model):
@@ -58,6 +58,16 @@ class Joke(models.Model):
     slug = models.SlugField(
         max_length =50, unique=True, null=False, editable=False
     )
+
+    @property
+    def rating(self):
+        if self.num_votes == 0:  # No jokes, so the rating is 0
+            return 0
+
+        r = JokeVote.objects.filter(joke=self).aggregate(average=Avg('vote'))
+
+        # Return the rounded rating.
+        return round(5 + (r['average'] * 5), 2)
 
     def get_absolute_url(self):
         return reverse('jokes:detail', args=[self.slug])

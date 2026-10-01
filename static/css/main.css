@@ -54,3 +54,18 @@ label {
   font-weight: normal;
   margin: 0 1rem;
 }
+
+
+/* RATING BAR */
+#rating-container {
+  background-color:silver;
+  border-radius: .5em;
+  max-width: 5rem;
+  padding: 2px;
+}
+
+#rating {
+  background-color: gold;
+  border-radius: .5em;
+  height: 10px;
+}

@@ -9,6 +9,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import Joke, JokeVote
+from django.db.models import Q
 
 def vote(request, slug):
     user = request.user # The logged-in user (or AnonymousUser).
@@ -117,6 +118,32 @@ class JokeListView(ListView):
             'updated': 'updated',
             'default_key': 'updated'
         }
+    
+    def get_queryset(self):
+        ordering = self.get_ordering()
+        qs = Joke.objects.all()
+
+        if 'q' in self.request.GET: # Filter by search query
+            q = self.request.GET.get('q') 
+            qs = qs.filter(
+                Q(question__icontains=q) | Q(answer__icontains=q)
+        )
+
+        if 'slug' in self.kwargs: # Filter by category or tag
+            slug = self.kwargs['slug']
+            if '/category' in self.request.path_info:
+                qs = qs.filter(category_slug=slug)
+            if '/tag' in self.request.path_info:
+                qs = qs.filter(tags__slug=slug)
+        elif 'username' in self.kwargs: # Filter by joke creator
+            username = self.kwargs['username']
+            qs = qs.filter(user__username=username)
+
+        return qs.order_by(ordering)
+
+
+
+
 
 class JokeCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Joke
