@@ -70,39 +70,54 @@
 
             {% if order == 'joke' and dir == 'asc' %}
               <th>
-                <a href="?order=joke&direction=desc&q={{ request.GET.q }}">Joke</a>
+                <a href="?order=joke&direction=desc&q={{ request.GET.q }}">
+                  Joke
+                </a>
               </th>
             {% else %}
               <th>
-                <a href="?order=joke&direction=asc&q={{ request.GET.q }}">Joke</a>
+                <a href="?order=joke&direction=asc&q={{ request.GET.q }}">
+                  Joke
+                </a>
               </th>
             {% endif %}
 
             {% if order == 'category' and dir == 'asc' %}
               <th>
-                <a href="?order=category&direction=desc&q={{ request.GET.q }}">Category</a>
+                <a href="?order=category&direction=desc&q={{ request.GET.q }}">
+                  Category
+                </a>
               </th>
             {% else %}
               <th>
-                <a href="?order=category&direction=asc&q={{ request.GET.q }}">Category</a>
+                <a href="?order=category&direction=asc&q={{ request.GET.q }}">
+                  Category
+                </a>
               </th>
             {% endif %}
 
             {% if order == 'creator' and dir == 'asc' %}
               <th>
-                <a href="?order=creator&direction=desc&q={{ request.GET.q }}">Creator</a>
+                <a href="?order=creator&direction=desc&q={{ request.GET.q }}">
+                  Creator
+                </a>
               </th>
             {% else %}
               <th>
-                <a href="?order=creator&direction=asc&q={{ request.GET.q }}">Creator</a>
+                <a href="?order=creator&direction=asc&q={{ request.GET.q }}">
+                  Creator
+                </a>
               </th>
             {% endif %}
-              <th>Rating</th>
+
+            <th>Rating</th>
+
           </tr>
         {% endwith %}
       </thead>
 
       <tbody>
+
         {% for joke in joke_list %}
           <tr>
 
@@ -149,15 +164,24 @@
 
               {% endif %}
             </td>
-          <td>
-            <div id="rating-container" title="{{ joke.rating }}">
-              <div id="rating" 
-                style="width:{% widthratio joke.rating 10 100 %}%;"></div>
-            </div>
-            ({{ joke.num_votes }} vote{{ joke.num_votes|pluralize }})
-          </td>
+
+            <td>
+              {% with votes=joke.votes %}
+
+                <div id="rating-container" title="{{ votes.rating }}">
+                  <div id="rating"
+                       style="width:{% widthratio votes.rating 10 100 %}%;">
+                  </div>
+                </div>
+
+                ({{ votes.num_votes }} vote{{ votes.num_votes|pluralize }})
+
+              {% endwith %}
+            </td>
+
           </tr>
         {% endfor %}
+
       </tbody>
 
     </table>

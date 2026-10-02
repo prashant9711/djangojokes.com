@@ -1,16 +1,21 @@
 from django.contrib import admin
 from .models import Category, Joke, JokeVote, Tag
-
+from common.admin import DjangoJokesAdmin
 
 @admin.register(Joke)
-class JokeAdmin(admin.ModelAdmin):
+class JokeAdmin(DjangoJokesAdmin):
     model = Joke
-    list_display = ['question', 'created', 'updated']
+
+    # List Attributes
+    date_hierarchy = 'updated'
+    list_display = ['question', 'category', 'updated']
+    list_filter = ['updated', 'category', 'tags']
+    ordering = ['-updated']
+    search_fields = ['question', 'answer']
 
     def get_readonly_fields(self, request, obj=None):
-        if obj:  # editing an existing object
+        if obj: # editing an existing object
             return ('slug', 'created', 'updated')
-
         return ()
     
 
